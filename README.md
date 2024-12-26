@@ -77,6 +77,15 @@
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+
+## Milestone
+- 랜딩페이지 및 SEO 적용
+- 아이콘 분리 및 웹폰트 변경 (fantastic icon 적용)
+- Remix 로 마이그레이션 (앱브릿지 확인 필요)
+- 테스트 코드 추가
+- mocking 추가
+- 마이페이지 수정 기능
+
 <!-- MARKDOWN LINKS & IMAGES -->
 
 [product-screenshot]: public/screenshot.jpg
