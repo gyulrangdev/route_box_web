@@ -3,13 +3,11 @@ import { Header } from '@/components/common/header/index';
 import SettingList from '@/components/setting/home/index';
 import { useModal } from '@/hooks/useModal';
 import DefaultLayout from '@/layouts/DefaultLayout';
-import { storageKey } from '@/constants/storageKey';
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router';
 import { ConfirmationModal } from '@/components/common/modals/index';
 import FlexBox from '@/components/common/flex-box';
-import { useNativeBridge } from '@/hooks/useNativeBridge';
-import { setTokenHeader } from '@/api/baseApi';
 import { toast } from 'react-toastify';
+import { useAuth } from '@/hooks/useAuth';
 
 export const Route = createLazyFileRoute('/setting/')({
   component: Setting,
@@ -17,6 +15,7 @@ export const Route = createLazyFileRoute('/setting/')({
 
 function Setting() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const {
     isOpen: isLogoutOpen,
@@ -24,14 +23,8 @@ function Setting() {
     closeModal: closeLogoutModal,
   } = useModal();
 
-  const { setToken, handleLogout: handleNativeLogout } = useNativeBridge();
-
   const handleLogout = () => {
-    handleNativeLogout();
-    // TODO :: 로그아웃 리펙토링
-    window.localStorage.removeItem(storageKey.accessToken);
-    setToken(null);
-    setTokenHeader(null);
+    logout();
     toast.success('로그아웃 되었습니다.');
     navigate({ to: '/' });
   };

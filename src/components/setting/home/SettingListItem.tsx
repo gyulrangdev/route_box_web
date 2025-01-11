@@ -9,7 +9,12 @@ interface SettingListItemProps {
   onClick?: () => void;
 }
 
-const SettingListItem: React.FC<SettingListItemProps> = ({ setting, isLast, to, onClick }) => {
+const SettingListItem: React.FC<SettingListItemProps> = ({
+  setting,
+  isLast = false,
+  to,
+  onClick,
+}) => {
   const navigate = useNavigate();
   const handleClick = () => {
     if (to) {

@@ -16,6 +16,7 @@ import TextAreaWithCounter from '@/components/common/TextAreaWithCounter';
 import { useNativeBridge } from '@/hooks/useNativeBridge';
 import { setTokenHeader } from '@/api/baseApi';
 import { toast } from 'react-toastify';
+import { useAuth } from '@/hooks/useAuth';
 
 export const Route = createLazyFileRoute('/withdraw-explanation')({
   component: WithdrawExplanation,
@@ -23,9 +24,10 @@ export const Route = createLazyFileRoute('/withdraw-explanation')({
 
 function WithdrawExplanation() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const { items, toggleCheck } = useCheckList(initialWithdrawValues);
   const [textAreaValue, setTextAreaValue] = React.useState('');
-  const { handleWithdraw: handleNativeWithdraw, setToken } = useNativeBridge();
+  const { handleWithdraw: handleNativeWithdraw } = useNativeBridge();
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: authService.postWithdraw,
@@ -41,9 +43,7 @@ function WithdrawExplanation() {
       reasonType,
       reasonDetail: textAreaValue,
     }).then(() => {
-      window.localStorage.removeItem(storageKey.accessToken);
-      setToken(null);
-      setTokenHeader(null);
+      logout();
       handleNativeWithdraw();
       toast.success('회원 탈퇴 되었습니다.');
       navigate({ to: '/' });
