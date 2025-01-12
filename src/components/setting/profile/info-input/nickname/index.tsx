@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { NicknameCharCount, NicknameContainer, NicknameInput } from './style';
 import { InputLabel, InputSection } from '../style';
 
@@ -8,30 +8,18 @@ interface NicknameProps {
 }
 
 export const Nickname: React.FC<NicknameProps> = ({ nickname, handleInputChange }) => {
-  const [value, setValue] = useState('');
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    setValue(newValue);
-    handleInputChange('nickname', newValue);
-  };
-
-  useEffect(() => {
-    if (value !== nickname) {
-      setValue(nickname);
-    }
-  }, [nickname, value]);
-
   return (
     <InputSection>
       <InputLabel>닉네임</InputLabel>
       <NicknameContainer>
         <NicknameInput
           placeholder="닉네임을 입력해주세요"
-          value={value}
-          onChange={handleChange}
+          name="nickname"
+          value={nickname}
+          onChange={(e) => handleInputChange(e.currentTarget.name, e.currentTarget.value)}
           maxLength={8}
         />
-        <NicknameCharCount>({value.length}/8)</NicknameCharCount>
+        <NicknameCharCount>({nickname.length}/8)</NicknameCharCount>
       </NicknameContainer>
     </InputSection>
   );
