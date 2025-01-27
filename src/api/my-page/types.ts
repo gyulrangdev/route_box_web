@@ -1,15 +1,15 @@
+export type genderType = 'PRIVATE' | 'MALE' | 'FEMALE';
 export interface UserProfileResponse {
   id: number;
   profileImageUrl: string;
   nickname: string;
-  gender: string;
+  gender: genderType;
   birthDay: string;
   introduction: string;
   numOfRoutes: number;
   mostVisitedLocation: string;
   mostTaggedRouteStyles: string;
 }
-
 export interface RootObject {
   routes: Route[];
 }
