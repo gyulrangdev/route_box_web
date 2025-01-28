@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { Nickname } from './nickname';
 import { Birth } from './birth';
 import { Gender } from './gender';
@@ -18,10 +17,7 @@ export const ProfileInfo = () => {
         birthDay={currentValues.birthDay}
         handleInputChange={(name, value) => updateField(name, value)}
       />
-      <Gender
-        gender={currentValues.gender}
-        handleInputChange={(name, value) => updateField(name, value)}
-      />
+      <Gender />
     </FlexBox>
   );
 };

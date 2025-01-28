@@ -25,11 +25,14 @@ export const userInfo = {
   },
 
   patchMyInfo: async (data: MyInfoRequest): Promise<MyInfoResponse> => {
+    // 리펙토링 필요 : 로직 분리
     const formData = new FormData();
+
     Object.entries(data).forEach(([key, value]) => {
       if (value !== undefined) {
-        if (key === 'profileImage' && value instanceof File) {
-          formData.append(key, value);
+        if (key === 'profileImageUrl' && value instanceof File) {
+          // 리펙토링 필요 : submit 전 데이터 변형 어댑터 추가 필요
+          formData.append('profileImage', value);
         } else {
           formData.append(key, String(value));
         }

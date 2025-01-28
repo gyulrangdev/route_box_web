@@ -17,7 +17,6 @@ function ProfileProvider({ children }: { children: React.ReactNode }) {
   const { mutateAsync } = useMutation({
     mutationFn: userInfo.patchMyInfo,
     onSuccess: () => {
-      resetChanges();
       navigate({ from: '/setting/profile', to: '/my-page' });
     },
   });
@@ -27,7 +26,7 @@ function ProfileProvider({ children }: { children: React.ReactNode }) {
       profileImageUrl: data?.profileImageUrl ?? '',
       nickname: data?.nickname ?? '',
       birthDay: data?.birthDay ?? '',
-      gender: data?.gender ?? '',
+      gender: data?.gender ?? 'MALE',
     }),
     [data]
   );
@@ -39,11 +38,12 @@ function ProfileProvider({ children }: { children: React.ReactNode }) {
     () => ({
       ...initialValues,
       ...editedFields,
+      profileImageUrl: file ? file : initialValues.profileImageUrl,
     }),
-    [initialValues, editedFields]
+    [initialValues, editedFields, file]
   );
 
-  const updateField = (name: keyof IProfileEdit, value: string) => {
+  const updateField = (name: string, value: string) => {
     console.log(name, value);
     setEditedFields((prev) => ({ ...prev, [name]: value }));
   };
@@ -63,9 +63,8 @@ function ProfileProvider({ children }: { children: React.ReactNode }) {
     if (!data) return;
 
     await mutateAsync({
-      ...data,
       ...currentValues,
-      profileImage: file,
+      nickname: editedFields.nickname ? editedFields.nickname : undefined,
     });
   };
 
