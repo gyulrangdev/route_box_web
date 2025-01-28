@@ -21,21 +21,21 @@ export const Gender: React.FC<GenderProps> = ({ gender, handleInputChange }) => 
       <GenderType>
         <GenderSelect
           value="MALE"
-          isSelected={selectedGender === '남성'}
+          $isSelected={selectedGender === '남성'}
           onClick={() => handleSelect('남성')}
         >
           남성
         </GenderSelect>
         <GenderSelect
           value="FEMALE"
-          isSelected={selectedGender === '여성'}
+          $isSelected={selectedGender === '여성'}
           onClick={() => handleSelect('여성')}
         >
           여성
         </GenderSelect>
         <GenderSelect
           value="PRIVATE"
-          isSelected={selectedGender === '비공개'}
+          $isSelected={selectedGender === '비공개'}
           onClick={() => handleSelect('비공개')}
         >
           비공개

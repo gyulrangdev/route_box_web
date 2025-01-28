@@ -3,31 +3,25 @@ import { Nickname } from './nickname';
 import { Birth } from './birth';
 import { Gender } from './gender';
 import FlexBox from '@/components/common/flex-box';
+import { useProfile } from '@/contexts/profile';
 
-interface ProfileInfoProps {
-  handleInputChange: (name: string, value: string) => void;
-  nickname: string;
-  birthDay: string;
-  gender: string;
-}
+export const ProfileInfo = () => {
+  const { currentValues, updateField } = useProfile();
 
-export const ProfileInfo: React.FC<ProfileInfoProps> = ({
-  handleInputChange,
-  nickname,
-  birthDay,
-  gender,
-}) => {
   return (
     <FlexBox col gap={2}>
       <Nickname
-        nickname={nickname}
-        handleInputChange={(name, value) => handleInputChange(name, value)}
+        nickname={currentValues.nickname}
+        handleInputChange={(name, value) => updateField(name, value)}
       />
       <Birth
-        birthDay={birthDay}
-        handleInputChange={(name, value) => handleInputChange(name, value)}
+        birthDay={currentValues.birthDay}
+        handleInputChange={(name, value) => updateField(name, value)}
       />
-      <Gender gender={gender} handleInputChange={(name, value) => handleInputChange(name, value)} />
+      <Gender
+        gender={currentValues.gender}
+        handleInputChange={(name, value) => updateField(name, value)}
+      />
     </FlexBox>
   );
 };

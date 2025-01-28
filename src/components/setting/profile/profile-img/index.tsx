@@ -3,14 +3,10 @@ import profile from '@/assets/svg/profile.svg';
 import upload from '@/assets/svg/profile_image_upload.svg';
 import { ProfileImgWrapper, UploadBtn } from './style';
 import FlexBox from '@/components/common/flex-box';
+import { useProfile } from '@/contexts/profile';
 
-interface ProfileImgComponentsProps {
-  setFile: (file: File | null) => void;
-  profileImg: string;
-}
-
-export const ProfileImg: React.FC<ProfileImgComponentsProps> = ({ setFile, profileImg }) => {
-  const [imgUrl, setImgUrl] = useState(profileImg || profile);
+export const ProfileImg = () => {
+  const { currentValues, updateFile } = useProfile();
 
   const handleClick = () => {
     const fileInput = document.getElementById('fileInput');
@@ -22,19 +18,13 @@ export const ProfileImg: React.FC<ProfileImgComponentsProps> = ({ setFile, profi
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
-      setFile(selectedFile);
+      updateFile(selectedFile);
     }
   };
 
-  useEffect(() => {
-    if (profileImg) {
-      setImgUrl(profileImg);
-    }
-  }, [profileImg]);
-
   return (
     <FlexBox justify="center">
-      <ProfileImgWrapper src={imgUrl} alt="profile" />
+      <ProfileImgWrapper src={currentValues.profileImageUrl ?? profile} alt="profile" />
       <UploadBtn onClick={handleClick}>
         <img src={upload} alt="upload" />
       </UploadBtn>
