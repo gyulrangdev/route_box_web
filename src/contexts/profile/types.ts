@@ -1,7 +1,7 @@
 import { genderType } from '@/api/my-page/types';
 
 export interface IProfileEdit {
-  profileImageUrl: string;
+  profileImageUrl: string | File;
   nickname: string;
   birthDay: string;
   gender: genderType;
