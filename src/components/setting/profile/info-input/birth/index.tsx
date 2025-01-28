@@ -8,7 +8,6 @@ interface BirthProps {
 }
 
 export const Birth: React.FC<BirthProps> = ({ birthDay, handleInputChange }) => {
-  console.log(birthDay);
   const splitBirthday = birthDay.split('-');
   const year = splitBirthday[0];
   const month = splitBirthday[1];
@@ -18,12 +17,27 @@ export const Birth: React.FC<BirthProps> = ({ birthDay, handleInputChange }) => 
   const months = Array.from({ length: 12 }, (_, i) => `0${i + 1}`.slice(-2));
   const days = Array.from({ length: 31 }, (_, i) => `0${i + 1}`.slice(-2));
 
+  function handleDateChange(type: 'year' | 'month' | 'day', value: string) {
+    const [currentYear, currentMonth, currentDay] = birthDay.split('-');
+    const newDate = [
+      type === 'year' ? value : currentYear,
+      type === 'month' ? value : currentMonth,
+      type === 'day' ? value : currentDay,
+    ].join('-');
+
+    handleInputChange('birthDay', newDate);
+  }
+
   return (
     <InputSection>
       <InputLabel>생년월일</InputLabel>
       <BirthContainer>
-        <BirthSelect hasValue={!!year} value={year}>
-          <option value="" disabled selected>
+        <BirthSelect
+          $hasValue={!!year}
+          value={year}
+          onChange={(e) => handleDateChange('year', e.target.value)}
+        >
+          <option value="" disabled>
             년
           </option>
           {years.map((yr) => (
@@ -32,8 +46,12 @@ export const Birth: React.FC<BirthProps> = ({ birthDay, handleInputChange }) => 
             </option>
           ))}
         </BirthSelect>
-        <BirthSelect hasValue={!!year} value={month}>
-          <option value="" disabled selected>
+        <BirthSelect
+          $hasValue={!!month}
+          value={month}
+          onChange={(e) => handleDateChange('month', e.target.value)}
+        >
+          <option value="" disabled>
             월
           </option>
           {months.map((mn) => (
@@ -42,8 +60,12 @@ export const Birth: React.FC<BirthProps> = ({ birthDay, handleInputChange }) => 
             </option>
           ))}
         </BirthSelect>
-        <BirthSelect hasValue={!!year} value={day}>
-          <option value="" disabled selected>
+        <BirthSelect
+          $hasValue={!!day}
+          value={day}
+          onChange={(e) => handleDateChange('day', e.target.value)}
+        >
+          <option value="" disabled>
             일
           </option>
           {days.map((dy) => (

@@ -14,7 +14,7 @@ export const GenderType = styled.div`
 `;
 
 interface GenderSelectProps {
-  isSelected: boolean;
+  $isSelected: boolean;
 }
 
 export const GenderSelect = styled.button<GenderSelectProps>`
@@ -24,6 +24,6 @@ export const GenderSelect = styled.button<GenderSelectProps>`
   gap: 0.625rem;
   border-radius: 56.25rem;
   border: 1px solid #e1e6e9;
-  background: ${(props) => (props.isSelected ? '#21C8B6' : '#fff')};
-  color: ${(props) => (props.isSelected ? '#fff' : '#000')};
+  background: ${(props) => (props.$isSelected ? '#21C8B6' : '#fff')};
+  color: ${(props) => (props.$isSelected ? '#fff' : '#000')};
 `;

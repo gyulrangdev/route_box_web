@@ -15,4 +15,5 @@ export const UploadBtn = styled.button`
   position: absolute;
   transform: translateX(85%);
   top: 9.5rem;
+  cursor: pointer;
 `;
