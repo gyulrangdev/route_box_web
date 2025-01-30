@@ -28,7 +28,7 @@ function MyPage() {
     queryFn: () => userInfo.getMyPurchasedRoutes(0, 10),
   });
 
-  const { renderMessage, toggleMessageVisibility } = useNativeBridge();
+  const { renderMessage, toggleMessageVisibility, token } = useNativeBridge();
 
   if (isLoading) return <Loader />;
 
@@ -47,7 +47,7 @@ function MyPage() {
           mostVisitedLocation={userProfile?.mostVisitedLocation}
           mostTaggedRouteStyles={userProfile?.mostTaggedRouteStyles}
         />
-        <RouteBox routes={routes?.content ?? []} />
+        {token && <RouteBox routes={routes?.content ?? []} />}
       </FlexBox>
       {import.meta.env.VITE_APP_BUILD_ENV !== 'production' && renderMessage()}
       {import.meta.env.VITE_APP_BUILD_ENV !== 'production' && (

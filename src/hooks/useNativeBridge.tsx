@@ -136,6 +136,10 @@ export function useNativeBridge() {
   );
 
   const handleLogout = useCallback(() => {
+    // 토큰 초기화
+    setToken(null);
+
+    // 앱에 로그아웃 message 전송
     const message: NativeMessage = {
       type: 'LOGOUT',
     };
@@ -143,6 +147,10 @@ export function useNativeBridge() {
   }, [sendMessageToNative]);
 
   const handleWithdraw = useCallback(() => {
+    // 토큰 초기화
+    setToken(null);
+
+    // 앱에 회원탈퇴 message 전송
     const message: NativeMessage = {
       type: 'WITHDRAW',
     };

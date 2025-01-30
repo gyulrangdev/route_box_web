@@ -1,33 +1,32 @@
-import React, { useEffect, useState } from 'react';
 import { GenderContainer, GenderSelect, GenderType } from './style';
 import { InputLabel } from '../style';
+import { useProfile } from '@/contexts/profile';
 
-interface GenderProps {
-  gender: string;
-  handleInputChange: (name: string, value: string) => void;
-}
-
-export const Gender: React.FC<GenderProps> = ({ gender, handleInputChange }) => {
-  const [selectedGender, setSelectedGender] = useState<string | null>(null);
-
-  const handleSelect = (gender: string) => {
-    setSelectedGender(gender);
-    handleInputChange('gender', gender);
-  };
+export const Gender = () => {
+  const { currentValues, updateField } = useProfile();
 
   return (
     <GenderContainer>
       <InputLabel>성별</InputLabel>
       <GenderType>
-        <GenderSelect isSelected={selectedGender === '남성'} onClick={() => handleSelect('남성')}>
+        <GenderSelect
+          value="MALE"
+          $isSelected={currentValues.gender === 'MALE'}
+          onClick={() => updateField('gender', 'MALE')}
+        >
           남성
         </GenderSelect>
-        <GenderSelect isSelected={selectedGender === '여성'} onClick={() => handleSelect('여성')}>
+        <GenderSelect
+          value="FEMALE"
+          $isSelected={currentValues.gender === 'FEMALE'}
+          onClick={() => updateField('gender', 'FEMALE')}
+        >
           여성
         </GenderSelect>
         <GenderSelect
-          isSelected={selectedGender === '비공개'}
-          onClick={() => handleSelect('비공개')}
+          value="PRIVATE"
+          $isSelected={currentValues.gender === 'PRIVATE'}
+          onClick={() => updateField('gender', 'PRIVATE')}
         >
           비공개
         </GenderSelect>

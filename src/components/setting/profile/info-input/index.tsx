@@ -1,52 +1,23 @@
-import React, { useEffect, useState } from 'react';
 import { Nickname } from './nickname';
 import { Birth } from './birth';
 import { Gender } from './gender';
 import FlexBox from '@/components/common/flex-box';
+import { useProfile } from '@/contexts/profile';
 
-interface ProfileInfoProps {
-  onActiveChange: (isActive: boolean) => void;
-  handleInputChange: (name: string, value: string) => void;
-  nickname: string;
-  birthDay: string;
-  gender: string;
-}
-
-export const ProfileInfo: React.FC<ProfileInfoProps> = ({
-  onActiveChange,
-  handleInputChange,
-  nickname,
-  birthDay,
-  gender,
-}) => {
-  const [isActive, setIsActive] = useState(false);
-
-  useEffect(() => {
-    if (nickname && birthDay && gender) {
-      setIsActive(true);
-    } else {
-      setIsActive(false);
-    }
-  }, [nickname, birthDay, gender]);
-
-  useEffect(() => {
-    onActiveChange(isActive);
-  }, [isActive, onActiveChange]);
+export const ProfileInfo = () => {
+  const { currentValues, updateField } = useProfile();
 
   return (
     <FlexBox col gap={2}>
       <Nickname
-        nickname={nickname}
-        handleInputChange={(_, value) => handleInputChange('nickname', value)}
+        nickname={currentValues.nickname}
+        handleInputChange={(name, value) => updateField(name, value)}
       />
       <Birth
-        birthDay={birthDay}
-        handleInputChange={(_, value) => handleInputChange('birthDay', value)}
+        birthDay={currentValues.birthDay}
+        handleInputChange={(name, value) => updateField(name, value)}
       />
-      <Gender
-        gender={gender}
-        handleInputChange={(_, value) => handleInputChange('gender', value)}
-      />
+      <Gender />
     </FlexBox>
   );
 };

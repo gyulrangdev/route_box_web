@@ -7,80 +7,30 @@ import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { queryKey, userInfo } from '@/api/my-page/userInfo';
 import FlexBox from '@/components/common/flex-box';
+import { genderType } from '@/api/my-page/types';
+import { ProfileProvider, useProfile } from '@/contexts/profile';
 
 export const Route = createLazyFileRoute('/setting/profile')({
   component: Profile,
 });
 
 function Profile() {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const [disabled, setDisabled] = useState(false);
-  const [profileValue, setProfileValue] = useState({
-    profileImageUrl: '',
-    nickname: '',
-    birthDay: '',
-    gender: '',
-  });
+  return (
+    <ProfileProvider>
+      <ProfileContent />
+    </ProfileProvider>
+  );
+}
 
-  const [file, setFile] = useState<File | null>(null); // 파일 상태 추가
-
-  const { data } = useQuery({
-    queryKey: [queryKey.userProfile],
-    queryFn: userInfo.getMyProfile,
-  });
-
-  const { mutateAsync } = useMutation({
-    mutationFn: userInfo.patchMyInfo,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKey.userProfile] });
-    },
-  });
-
-  const handleInputChange = (name: string, value: string) => {
-    console.log('Updating state with:', { name, value });
-    setProfileValue((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleActiveChange = (active: boolean) => {
-    setDisabled(active);
-  };
-
-  const handleClick = () => {
-    // 데이터 전송
-    mutateAsync({
-      nickname: profileValue.nickname,
-      gender: profileValue.gender,
-      birthDay: profileValue.birthDay,
-      profileImage: file,
-    }).then(() => {
-      navigate({ from: '/setting/profile', to: '/my-page' });
-    });
-  };
-
-  useEffect(() => {
-    setProfileValue({
-      profileImageUrl: data?.profileImageUrl || '',
-      nickname: data?.nickname || '',
-      birthDay: data?.birthDay || '',
-      gender: data?.gender || '',
-    });
-  }, [data]);
+function ProfileContent() {
+  const { hasChanges, handleSubmit } = useProfile();
 
   return (
     <DefaultLayout>
       <Header back go={'/setting'} title="회원 정보 수정" />
       <FlexBox col justify="space-between" h="calc(100dvh - 4rem)" px={1.37} py={1.25}>
-        <ProfileComponents
-          onActiveChange={handleActiveChange}
-          setFile={setFile}
-          handleInputChange={handleInputChange}
-          profileValue={profileValue}
-        />
-        <CustomBtn disabled={disabled} text="저장하기" onClick={handleClick} />
+        <ProfileComponents />
+        <CustomBtn disabled={!hasChanges} text="저장하기" onClick={handleSubmit} />
       </FlexBox>
     </DefaultLayout>
   );

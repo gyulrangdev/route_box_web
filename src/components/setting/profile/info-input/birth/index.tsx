@@ -8,33 +8,36 @@ interface BirthProps {
 }
 
 export const Birth: React.FC<BirthProps> = ({ birthDay, handleInputChange }) => {
-  const [year, setYear] = useState<string>('');
-  const [month, setMonth] = useState<string>('');
-  const [day, setDay] = useState<string>('');
+  const splitBirthday = birthDay.split('-');
+  const year = splitBirthday[0];
+  const month = splitBirthday[1];
+  const day = splitBirthday[2];
 
   const years = Array.from({ length: 100 }, (_, i) => `${2024 - i}`);
   const months = Array.from({ length: 12 }, (_, i) => `0${i + 1}`.slice(-2));
   const days = Array.from({ length: 31 }, (_, i) => `0${i + 1}`.slice(-2));
 
-  useEffect(() => {
-    const [newYear, newMonth, newDay] = birthDay.split('-');
-    setYear(newYear || '');
-    setMonth(newMonth || '');
-    setDay(newDay || '');
-  }, [birthDay]);
+  function handleDateChange(type: 'year' | 'month' | 'day', value: string) {
+    const [currentYear, currentMonth, currentDay] = birthDay.split('-');
+    const newDate = [
+      type === 'year' ? value : currentYear,
+      type === 'month' ? value : currentMonth,
+      type === 'day' ? value : currentDay,
+    ].join('-');
 
-  useEffect(() => {
-    if (year && month && day && `${year}-${month}-${day}` !== birthDay) {
-      handleInputChange('birthDay', `${year}-${month}-${day}`);
-    }
-  }, [year, month, day, birthDay, handleInputChange]);
+    handleInputChange('birthDay', newDate);
+  }
 
   return (
     <InputSection>
       <InputLabel>생년월일</InputLabel>
       <BirthContainer>
-        <BirthSelect hasValue={!!year} value={year} onChange={(e) => setYear(e.target.value)}>
-          <option value="" disabled selected>
+        <BirthSelect
+          $hasValue={!!year}
+          value={year}
+          onChange={(e) => handleDateChange('year', e.target.value)}
+        >
+          <option value="" disabled>
             년
           </option>
           {years.map((yr) => (
@@ -43,8 +46,12 @@ export const Birth: React.FC<BirthProps> = ({ birthDay, handleInputChange }) => 
             </option>
           ))}
         </BirthSelect>
-        <BirthSelect hasValue={!!year} value={month} onChange={(e) => setMonth(e.target.value)}>
-          <option value="" disabled selected>
+        <BirthSelect
+          $hasValue={!!month}
+          value={month}
+          onChange={(e) => handleDateChange('month', e.target.value)}
+        >
+          <option value="" disabled>
             월
           </option>
           {months.map((mn) => (
@@ -53,8 +60,12 @@ export const Birth: React.FC<BirthProps> = ({ birthDay, handleInputChange }) => 
             </option>
           ))}
         </BirthSelect>
-        <BirthSelect hasValue={!!year} value={day} onChange={(e) => setDay(e.target.value)}>
-          <option value="" disabled selected>
+        <BirthSelect
+          $hasValue={!!day}
+          value={day}
+          onChange={(e) => handleDateChange('day', e.target.value)}
+        >
+          <option value="" disabled>
             일
           </option>
           {days.map((dy) => (
